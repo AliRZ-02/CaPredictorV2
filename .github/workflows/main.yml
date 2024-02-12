@@ -1,0 +1,26 @@
+name: Cache Refresh
+
+on: 
+  schedule:
+    - cron: '00 05 * * *'
+
+jobs:
+  refresh-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Python Version
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      - name: Dependencies
+        uses: py-actions/py-dependency-install@v4
+        with:
+          path: "CapredictorV2/requirements.txt"
+      
+      - name: Clear Cache
+        run: |
+          cd CapredictorV2/jobs
+          python3 clear_cache.py

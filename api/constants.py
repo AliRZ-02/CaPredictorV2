@@ -1,0 +1,10 @@
+from enum import Enum
+
+SALARY_CAP_VALUE = 83_500_000
+
+class API_CODES(Enum):
+    SUCCESS = 200
+    BAD_REQUEST = 400
+    NOT_FOUND = 404
+    CACHE_ERROR = 503
+    CALCULATION_ERROR = 505
