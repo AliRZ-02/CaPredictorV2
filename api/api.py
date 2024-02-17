@@ -57,17 +57,17 @@ async def players():
     return [key for key in data], API_CODES.SUCCESS.value
 
 
-@api.route("/clear_cache")
-async def clear_cache():
-    try:
-        get_player_stats.cache_clear()
-        get_player_position.cache_clear()
-        request_players.cache_clear()
-        request_players_by_id.cache_clear()
-    except:
-        return {"error": "Could not clear async LRU cache"}, API_CODES.CACHE_ERROR.value
-    else:
-        return {"message": "Cache successfully cleared"}, API_CODES.SUCCESS.value
+# @api.route("/clear_cache")
+# async def clear_cache():
+#     try:
+#         get_player_stats.cache_clear()
+#         get_player_position.cache_clear()
+#         request_players.cache_clear()
+#         request_players_by_id.cache_clear()
+#     except:
+#         return {"error": "Could not clear async LRU cache"}, API_CODES.CACHE_ERROR.value
+#     else:
+#         return {"message": "Cache successfully cleared"}, API_CODES.SUCCESS.value
 
 
 async def players_dict():
