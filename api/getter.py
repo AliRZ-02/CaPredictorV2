@@ -6,7 +6,7 @@ from datetime import datetime
 from utils import convert_time_to_float
 
 
-@alru_cache
+# @alru_cache
 async def request_players() -> list[str]:
     async with ClientSession() as session:
         ALL_PLAYERS_URL = "https://search.d3.nhle.com/api/v1/search/player"
@@ -22,7 +22,7 @@ async def request_players() -> list[str]:
             return await resp.json()
 
 
-@alru_cache
+# @alru_cache
 async def request_players_by_id(player_id: str) -> dict:
     async with ClientSession() as session:
         search_url = f"https://api-web.nhle.com/v1/player/{player_id}/landing"
@@ -30,7 +30,7 @@ async def request_players_by_id(player_id: str) -> dict:
             return await resp.json()
 
 
-@alru_cache
+# @alru_cache
 async def get_player_stats(player_id: str):
     data = await request_players_by_id(player_id)
     
@@ -86,7 +86,7 @@ async def get_player_stats(player_id: str):
         )
 
 
-@alru_cache
+# @alru_cache
 async def get_player_position(player_id: str) -> PositionEnum:
     data = await request_players_by_id(player_id)
 
