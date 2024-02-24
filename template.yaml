@@ -1,0 +1,29 @@
+Resources:
+  PredictorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers.predict_handler
+      Runtime: python3.10
+      CodeUri: ./api/
+      MemorySize: 128
+      Timeout: 10
+      Events:
+        PredictorAPI:
+          Type: Api
+          Properties:
+            Path: /predict
+            Method: POST
+  PlayerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers.players_handler
+      Runtime: python3.10
+      CodeUri: ./api/
+      MemorySize: 128
+      Timeout: 10
+      Events:
+        PlayersAPI:
+          Type: Api
+          Properties:
+            Path: /players
+            Method: GET
