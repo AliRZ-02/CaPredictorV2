@@ -1,14 +1,12 @@
-from async_lru import alru_cache
-from aiohttp import ClientSession
 from urllib.parse import urlencode
 from model import SkaterStats, GoalieStats, PositionEnum
 from datetime import datetime
 from utils import convert_time_to_float
+from requests import Session
 
 
-# @alru_cache
-async def request_players() -> list[str]:
-    async with ClientSession() as session:
+def request_players() -> list[str]:
+    with Session() as session:
         ALL_PLAYERS_URL = "https://search.d3.nhle.com/api/v1/search/player"
         params = {
             "culture": "en-us",
@@ -18,21 +16,19 @@ async def request_players() -> list[str]:
         }
 
         search_url = f'{ALL_PLAYERS_URL}?{urlencode(params)}'
-        async with session.get(search_url) as resp:
-            return await resp.json()
+        with session.get(search_url) as resp:
+            return resp.json()
 
 
-# @alru_cache
-async def request_players_by_id(player_id: str) -> dict:
-    async with ClientSession() as session:
+def request_players_by_id(player_id: str) -> dict:
+    with Session() as session:
         search_url = f"https://api-web.nhle.com/v1/player/{player_id}/landing"
-        async with session.get(search_url) as resp:
-            return await resp.json()
+        with session.get(search_url) as resp:
+            return resp.json()
 
 
-# @alru_cache
-async def get_player_stats(player_id: str):
-    data = await request_players_by_id(player_id)
+def get_player_stats(player_id: str):
+    data = request_players_by_id(player_id)
     
     position = data.get("position", None)
     if not position or not isinstance(position, str):
@@ -86,8 +82,7 @@ async def get_player_stats(player_id: str):
         )
 
 
-# @alru_cache
-async def get_player_position(player_id: str) -> PositionEnum:
-    data = await request_players_by_id(player_id)
+def get_player_position(player_id: str) -> PositionEnum:
+    data = request_players_by_id(player_id)
 
     return PositionEnum(data.get("position", None))

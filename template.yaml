@@ -1,10 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: NHL API Lambda Fns
+
 Resources:
   PredictorFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: handlers.predict_handler
       Runtime: python3.10
-      CodeUri: ./api/
+      CodeUri: api/
       MemorySize: 128
       Timeout: 10
       Events:
@@ -12,13 +16,13 @@ Resources:
           Type: Api
           Properties:
             Path: /predict
-            Method: POST
+            Method: POST 
   PlayerFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: handlers.players_handler
       Runtime: python3.10
-      CodeUri: ./api/
+      CodeUri: api/
       MemorySize: 128
       Timeout: 10
       Events:

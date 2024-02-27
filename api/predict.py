@@ -1,10 +1,10 @@
 import joblib
-
+import requests
 from typing import Any
 from dataclasses import asdict
 from model import Player, PositionEnum, PositionException, SkaterStats, GoalieStats
 from constants import SALARY_CAP_VALUE
-
+from io import BytesIO
 
 class Predictor:
     def __init__(self, player: Player, contract_length: int, is_linreg: bool) -> None:
@@ -14,7 +14,7 @@ class Predictor:
     
     def __position_mapper(self, position: str) -> str:
         return {
-            PositionEnum.CENTER: "center",
+            PositionEnum.CENTER: "centers",
             PositionEnum.GOALIE: "goalies",
             PositionEnum.LEFT_WING: "wings",
             PositionEnum.RIGHT_WING: "wings",
@@ -27,11 +27,13 @@ class Predictor:
         if not position_string:
             raise PositionException(self.player.position)
         
-        filename = f'models/model_{position_string}.joblib' if not self.is_linreg else f'models/model_linreg_{position_string}.joblib'
+        # filename = f'models/model_{position_string}.joblib' if not self.is_linreg else f'models/model_linreg_{position_string}.joblib'
 
-        return joblib.load(
-            filename=filename
-        )
+        data = requests.get(f"https://capredictorv2models.onrender.com/{position_string}")
+        modelBytes = BytesIO(data.content)
+        modelBytes.seek(0)
+
+        return joblib.load(modelBytes)
     
     def get_prediction(self) -> dict:
         model = self.__get_model()
