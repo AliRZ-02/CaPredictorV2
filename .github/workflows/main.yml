@@ -1,6 +1,7 @@
 name: Populate Player Data
 
 on: 
+  workflow_dispatch
   schedule:
     - cron: '00 06 * * *'
 
