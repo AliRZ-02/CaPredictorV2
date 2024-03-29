@@ -228,18 +228,18 @@ def upsert_player_data():
             if player.get("stats"):
                 stats_percentiles = {
                     "playerId": player["stats"]["playerId"],
-                    "gamesPlayed": scipy.stats.percentileofscore(gamesPlayedArr, player["stats"]["gamesPlayed"]) if player["stats"].get("gamesPlayed") is not None else None,
-                    "goalsPer60": scipy.stats.percentileofscore(goalsArr, player["stats"]["goalsPer60"]) if player["stats"].get("goalsPer60") is not None else None,
-                    "assistsPer60": scipy.stats.percentileofscore(assistsArr, player["stats"]["assistsPer60"]) if player["stats"].get("assistsPer60") is not None else None,
-                    "PlusMinusPer60": scipy.stats.percentileofscore(pmArr, player["stats"]["PlusMinusPer60"]) if player["stats"].get("PlusMinusPer60") is not None else None,
-                    "PenaltyMinutesPer60": scipy.stats.percentileofscore(pimArr, player["stats"]["PenaltyMinutesPer60"]) if player["stats"].get("PenaltyMinutesPer60") is not None else None,
-                    "ShotsPer60": scipy.stats.percentileofscore(shotsArr, player["stats"]["ShotsPer60"]) if player["stats"].get("ShotsPer60") is not None else None,
-                    "ShootingPercentage": scipy.stats.percentileofscore(shotPctArr, player["stats"]["ShootingPercentage"]) if player["stats"].get("ShootingPercentage") is not None else None,
-                    "PowerPlayPer60": scipy.stats.percentileofscore(ppArr, player["stats"]["PowerPlayPer60"]) if player["stats"].get("PowerPlayPer60") is not None else None,
-                    "ShortHandedPer60": scipy.stats.percentileofscore(shArr, player["stats"]["ShortHandedPer60"]) if player["stats"].get("ShortHandedPer60") is not None else None,
-                    "EvenStrengthPer60": scipy.stats.percentileofscore(esArr, player["stats"]["EvenStrengthPer60"]) if player["stats"].get("EvenStrengthPer60") is not None else None,
-                    "FaceOffPercentage": scipy.stats.percentileofscore(foArr, player["stats"]["FaceOffPercentage"]) if player["stats"].get("FaceOffPercentage") is not None else None,
-                    "TimeOnIce": scipy.stats.percentileofscore(toiArr, player["stats"]["TimeOnIce"]) if player["stats"].get("TimeOnIce") is not None else None,
+                    "gamesPlayed": round(scipy.stats.percentileofscore(gamesPlayedArr, player["stats"]["gamesPlayed"])) if player["stats"].get("gamesPlayed") is not None else None,
+                    "goalsPer60": round(scipy.stats.percentileofscore(goalsArr, player["stats"]["goalsPer60"])) if player["stats"].get("goalsPer60") is not None else None,
+                    "assistsPer60": round(scipy.stats.percentileofscore(assistsArr, player["stats"]["assistsPer60"])) if player["stats"].get("assistsPer60") is not None else None,
+                    "PlusMinusPer60": round(scipy.stats.percentileofscore(pmArr, player["stats"]["PlusMinusPer60"])) if player["stats"].get("PlusMinusPer60") is not None else None,
+                    "PenaltyMinutesPer60": round(scipy.stats.percentileofscore(pimArr, player["stats"]["PenaltyMinutesPer60"])) if player["stats"].get("PenaltyMinutesPer60") is not None else None,
+                    "ShotsPer60": round(scipy.stats.percentileofscore(shotsArr, player["stats"]["ShotsPer60"])) if player["stats"].get("ShotsPer60") is not None else None,
+                    "ShootingPercentage": round(scipy.stats.percentileofscore(shotPctArr, player["stats"]["ShootingPercentage"])) if player["stats"].get("ShootingPercentage") is not None else None,
+                    "PowerPlayPer60": round(scipy.stats.percentileofscore(ppArr, player["stats"]["PowerPlayPer60"])) if player["stats"].get("PowerPlayPer60") is not None else None,
+                    "ShortHandedPer60": round(scipy.stats.percentileofscore(shArr, player["stats"]["ShortHandedPer60"])) if player["stats"].get("ShortHandedPer60") is not None else None,
+                    "EvenStrengthPer60": round(scipy.stats.percentileofscore(esArr, player["stats"]["EvenStrengthPer60"])) if player["stats"].get("EvenStrengthPer60") is not None else None,
+                    "FaceOffPercentage": round(scipy.stats.percentileofscore(foArr, player["stats"]["FaceOffPercentage"])) if player["stats"].get("FaceOffPercentage") is not None else None,
+                    "TimeOnIce": round(scipy.stats.percentileofscore(toiArr, player["stats"]["TimeOnIce"])) if player["stats"].get("TimeOnIce") is not None else None,
                 }
 
                 stats_to_upsert.append(
