@@ -162,7 +162,7 @@ async def request_player_stats(playerId: int, session: aiohttp.ClientSession) ->
                     "players": {
                         "playerId": playerId,
                         "playerDetails": {
-                            "playerName": f'{data.get("firstName")} {data.get("lastName")}',
+                            "playerName": f'{data.get("firstName", {}).get("default")} {data.get("lastName", {}).get("default")}',
                             "playerNumber": data.get("sweaterNumber"),
                             "position": data.get("position"),
                             "age": relativedelta(datetime.now(), birthDate).years if birthDate else None,
@@ -171,7 +171,7 @@ async def request_player_stats(playerId: int, session: aiohttp.ClientSession) ->
                         },
                         "birthInformation": {
                             "country": data.get("birthCountry"),
-                            "city": data.get("birthCity"),
+                            "city": data.get("birthCity", {}).get("default"),
                         },
                         "historicalData": {
                             "year": data.get("draftDetails", {}).get("year"),
