@@ -2,7 +2,7 @@ name: Hit endpoints
 
 on: 
   schedule:
-    - cron: '*/15 8-18 * * *'
+    - cron: '*/15 09-17 * * *'
 
 jobs:
   refresh-endpoints:
