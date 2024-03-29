@@ -1,11 +1,11 @@
-name: Populate Player Data
+name: Hit endpoints
 
 on: 
   schedule:
-    - cron: '00 06 * * *'
+    - cron: '*/15 8-18 * * *'
 
 jobs:
-  populate-player-data:
+  refresh-endpoints:
     runs-on: ubuntu-latest
     environment: ScriptsEnv
     steps:
@@ -32,4 +32,4 @@ jobs:
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
         run: |
           cd scripts
-          python3 populate_player_data.py
+          python3 hit_endpoints.py
