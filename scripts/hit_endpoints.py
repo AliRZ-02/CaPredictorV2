@@ -8,16 +8,16 @@ FRONTEND_URL = os.getenv("FRONTEND_URL")
 BACKEND_URL = os.getenv("BACKEND_URL")
 
 def hit_frontend_endpoint():
-    res = requests.get(f"{FRONTEND_URL}")
-
-    if not res.status_code == 200:
-        logger.warning(f"Couldn't reach Frontend: Status {res.status_code}")
+    try:
+        requests.get(f"{FRONTEND_URL}", timeout=0.5)
+    except:
+        pass
 
 def hit_backend_endpoint():
-    res = requests.get(f"{BACKEND_URL}/player/1")
-
-    if not res.status_code == 404:
-        logger.warning(f"Couldn't reach Backend: Status {res.status_code}")
+    try:
+        requests.get(f"{BACKEND_URL}/player/1", timeout=0.5)
+    except:
+        pass
 
 if __name__ == "__main__":
     hit_frontend_endpoint()

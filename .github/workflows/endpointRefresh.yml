@@ -20,15 +20,10 @@ jobs:
       - name: Dependencies
         uses: py-actions/py-dependency-install@v4
         with:
-          path: "scripts/requirements.txt"
+          path: "scripts/endpoint_refresh_requirements.txt"
       
       - name: Run Script
         env:
-          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
-          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          MONGO_APP: ${{ secrets.MONGO_APP }}
-          PLAYER_LIST_URL: ${{ secrets.PLAYER_LIST_URL }}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
         run: |
