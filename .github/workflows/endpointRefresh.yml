@@ -3,7 +3,7 @@ name: Hit endpoints
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0,20,40 09-17 * * *'
+    - cron: '0,20,40 13-21 * * *'
 
 jobs:
   refresh-endpoints:
