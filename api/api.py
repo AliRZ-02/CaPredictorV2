@@ -61,7 +61,14 @@ def players():
 def players_dict():
     data = request_players()
 
-    return {
-        item.get("name", None): item.get("playerId", None) 
-        for item in data if item.get("name", None) is not None
-    }
+    toReturn = {}
+    duplicates = {}
+    for item in data:
+        if item.get("name", None) is not None:
+            if item["name"] not in toReturn:
+                toReturn[item["name"]] = item.get("playerId")
+            else:
+                duplicates[item["name"]] = duplicates.get(item["name"], 0) + 1
+                toReturn[f'{item["name"]} ({duplicates[item["name"]]})'] = item.get("playerId")
+
+    return toReturn
