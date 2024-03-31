@@ -3,7 +3,7 @@ name: Hit endpoints
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0,20,40 13-21 * * *'
+    - cron: '0,10,20,30,40,50 * * * *'
 
 jobs:
   refresh-endpoints:
@@ -24,6 +24,8 @@ jobs:
       
       - name: Run Script
         env:
+          MODELS_URL: ${{ secrets.VALUATION_URL }}
+          VALUATION_URL: ${{ secrets.VALUATION_URL }}
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
         run: |

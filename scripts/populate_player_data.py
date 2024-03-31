@@ -62,6 +62,18 @@ shArr = []
 esArr = []
 foArr = []
 toiArr = []
+gamesPlayedArrDefense = []
+goalsArrDefense = []
+assistsArrDefense = []
+pmArrDefense = []
+pimArrDefense = []
+shotsArrDefense = []
+shotPctArrDefense = []
+ppArrDefense = []
+shArrDefense = []
+esArrDefense = []
+foArrDefense = []
+toiArrDefense = []
 gaaArr = []
 svPctArr = []
 winPctArr = []
@@ -83,6 +95,18 @@ async def request_player_stats(playerId: int, session: aiohttp.ClientSession) ->
     global esArr
     global foArr
     global toiArr
+    global gamesPlayedArrDefense
+    global goalsArrDefense
+    global assistsArrDefense
+    global pmArrDefense
+    global pimArrDefense
+    global shotsArrDefense
+    global shotPctArrDefense
+    global ppArrDefense
+    global shArrDefense
+    global esArrDefense
+    global foArrDefense
+    global toiArrDefense
     global gaaArr
     global svPctArr
     global winPctArr
@@ -141,59 +165,105 @@ async def request_player_stats(playerId: int, session: aiohttp.ClientSession) ->
                 
                 toi = convert_time_to_float(avgToi)
                 if toi is not None:
-                    toiArr.append(toi)
+                    if position == "D":
+                        toiArrDefense.append(toi)
+                    else:
+                        toiArr.append(toi)
                 else: 
                     return
                 
-                gamesPlayedArr.append(gamesPlayed)
+                if position == "D":
+                    gamesPlayedArrDefense.append(gamesPlayed)
+                else:
+                    gamesPlayedArr.append(gamesPlayed)
 
                 goals = latestSeason.get("goals")
                 if goals is not None:
                     goals = calculate_per60(goals, toi, gamesPlayed)
-                    goalsArr.append(goals)
+
+                    if position == "D":
+                        goalsArrDefense.append(goals)
+                    else:
+                        goalsArr.append(goals)
                 
                 assists = latestSeason.get("assists")
                 if assists is not None:
                     assists = calculate_per60(assists, toi, gamesPlayed)
-                    assistsArr.append(assists)
+
+                    if position == "D":
+                        assistsArrDefense.append(assists)
+                    else:
+                        assistsArr.append(assists)
                 
                 pm = latestSeason.get("plusMinus")
                 if pm is not None:
                     pm = calculate_per60(pm, toi, gamesPlayed)
-                    pmArr.append(pm)
+
+                    if position == "D":
+                        pmArrDefense.append(pm)
+                    else:
+                        pmArr.append(pm)
                 
                 pim = latestSeason.get("pim")
                 if pim is not None:
                     pim = calculate_per60(pim, toi, gamesPlayed)
-                    pimArr.append(pim)
+
+                    if position == "D":
+                        pimArrDefense.append(pim)
+                    else:
+                        pimArr.append(pim)
                 
                 shots = latestSeason.get("shots")
                 if shots is not None:
                     shots = calculate_per60(shots, toi, gamesPlayed)
-                    shotsArr.append(shots)
+
+                    if position == "D":
+                        shotsArrDefense.append(shots)
+                    else:
+                        shotsArr.append(shots)
                 
                 shotPct = latestSeason.get("shootingPctg")
                 if shotPct is not None:
-                    shotPctArr.append(shotPct)
+
+                    if position == "D":
+                        shotPctArrDefense.append(shotPct)
+                    else:
+                        shotPctArr.append(shotPct)
                 
                 pp = latestSeason.get("powerPlayPoints", 0)
                 if pp is not None:
                     pp = calculate_per60(pp, toi, gamesPlayed)
-                    ppArr.append(pp)
+
+                    if position == "D":
+                        ppArrDefense.append(pp)
+                    else:
+                        ppArr.append(pp)
                 
                 sh = latestSeason.get("shorthandedPoints", 0)
                 if sh is not None:
                     sh = calculate_per60(sh, toi, gamesPlayed)
-                    shArr.append(sh)
+
+                    if position == "D":
+                        shArrDefense.append(sh)
+                    else:
+                        shArr.append(sh)
                 
                 es = latestSeason.get("points", 0) - pp - sh
                 if es is not None:
                     es = calculate_per60(es, toi, gamesPlayed)
-                    esArr.append(es)
+
+                    if position == "D":
+                        esArrDefense.append(es)
+                    else:
+                        esArr.append(es)
                 
                 fo = latestSeason.get("faceoffWinningPctg")
                 if fo is not None:
-                    foArr.append(fo)
+
+                    if position == "D":
+                        foArrDefense.append(fo)
+                    else:
+                        foArr.append(fo)
                 
                 player_stats = {
                     "playerId": playerId,
@@ -266,7 +336,7 @@ def upsert_player_data():
     for player in player_original_stats:
         try:
             if player.get("stats"):
-                if player.get("players", {}).get("playerDetails", {}).get("position") != "G":
+                if player.get("players", {}).get("playerDetails", {}).get("position") in ["C", "L", "R"]:
                     stats_percentiles = {
                         "playerId": player["stats"]["playerId"],
                         "gamesPlayed": round(scipy.stats.percentileofscore(gamesPlayedArr, player["stats"]["gamesPlayed"])) if player["stats"].get("gamesPlayed") is not None else None,
@@ -281,6 +351,22 @@ def upsert_player_data():
                         "EvenStrengthPer60": round(scipy.stats.percentileofscore(esArr, player["stats"]["EvenStrengthPer60"])) if player["stats"].get("EvenStrengthPer60") is not None else None,
                         "FaceOffPercentage": round(scipy.stats.percentileofscore(foArr, player["stats"]["FaceOffPercentage"])) if player["stats"].get("FaceOffPercentage") is not None else None,
                         "TimeOnIce": round(scipy.stats.percentileofscore(toiArr, player["stats"]["TimeOnIce"])) if player["stats"].get("TimeOnIce") is not None else None,
+                    }
+                elif player.get("players", {}).get("playerDetails", {}).get("position") == "D":
+                    stats_percentiles = {
+                        "playerId": player["stats"]["playerId"],
+                        "gamesPlayed": round(scipy.stats.percentileofscore(gamesPlayedArrDefense, player["stats"]["gamesPlayed"])) if player["stats"].get("gamesPlayed") is not None else None,
+                        "goalsPer60": round(scipy.stats.percentileofscore(goalsArrDefense, player["stats"]["goalsPer60"])) if player["stats"].get("goalsPer60") is not None else None,
+                        "assistsPer60": round(scipy.stats.percentileofscore(assistsArrDefense, player["stats"]["assistsPer60"])) if player["stats"].get("assistsPer60") is not None else None,
+                        "PlusMinusPer60": round(scipy.stats.percentileofscore(pmArrDefense, player["stats"]["PlusMinusPer60"])) if player["stats"].get("PlusMinusPer60") is not None else None,
+                        "PenaltyMinutesPer60": 100 - round(scipy.stats.percentileofscore(pimArrDefense, player["stats"]["PenaltyMinutesPer60"])) if player["stats"].get("PenaltyMinutesPer60") is not None else None,
+                        "ShotsPer60": round(scipy.stats.percentileofscore(shotsArrDefense, player["stats"]["ShotsPer60"])) if player["stats"].get("ShotsPer60") is not None else None,
+                        "ShootingPercentage": round(scipy.stats.percentileofscore(shotPctArrDefense, player["stats"]["ShootingPercentage"])) if player["stats"].get("ShootingPercentage") is not None else None,
+                        "PowerPlayPer60": round(scipy.stats.percentileofscore(ppArrDefense, player["stats"]["PowerPlayPer60"])) if player["stats"].get("PowerPlayPer60") is not None else None,
+                        "ShortHandedPer60": round(scipy.stats.percentileofscore(shArrDefense, player["stats"]["ShortHandedPer60"])) if player["stats"].get("ShortHandedPer60") is not None else None,
+                        "EvenStrengthPer60": round(scipy.stats.percentileofscore(esArrDefense, player["stats"]["EvenStrengthPer60"])) if player["stats"].get("EvenStrengthPer60") is not None else None,
+                        "FaceOffPercentage": round(scipy.stats.percentileofscore(foArrDefense, player["stats"]["FaceOffPercentage"])) if player["stats"].get("FaceOffPercentage") is not None else None,
+                        "TimeOnIce": round(scipy.stats.percentileofscore(toiArrDefense, player["stats"]["TimeOnIce"])) if player["stats"].get("TimeOnIce") is not None else None,
                     }
                 else:
                     stats_percentiles = {
@@ -344,6 +430,18 @@ def update_player_stats():
         "esArr": len(esArr),
         "foArr": len(foArr),
         "toiArr": len(toiArr),
+        "gamesPlayedArrDefense": len(gamesPlayedArrDefense),
+        "goalsArrDefense": len(goalsArrDefense),
+        "assistsArrDefense": len(assistsArrDefense),
+        "pmArrDefense": len(pmArrDefense),
+        "pimArrDefense": len(pimArrDefense),
+        "shotsArrDefense": len(shotsArrDefense),
+        "shotPctArrDefense": len(shotPctArrDefense),
+        "ppArrDefense": len(ppArrDefense),
+        "shArrDefense": len(shArrDefense),
+        "esArrDefense": len(esArrDefense),
+        "foArrDefense": len(foArrDefense),
+        "toiArrDefense": len(toiArrDefense),
         "gaaArr": len(gaaArr),
         "svPctArr": len(svPctArr),
         "winPctArr": len(winPctArr),
