@@ -37,5 +37,5 @@ def hit_model_endpoint():
 if __name__ == "__main__":
     hit_frontend_endpoint()
     hit_backend_endpoint()
-    hit_model_endpoint()
-    hit_aws_valuation()
+    # hit_model_endpoint()
+    # hit_aws_valuation()
