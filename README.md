@@ -1,6 +1,11 @@
 # CaPredictorV2
 Free Hockey Visualizations & Market Valuations. Built with MERN + Python + AWS (Lambda) Stack.
 
+## Link
+- [CaPredictorV2](https://www.capredictor.com/)
+
+## Stack
+
 - [Backend](https://github.com/AliRZ-02/CaPredictorV2Backend)
   - Mongo
   - Node
